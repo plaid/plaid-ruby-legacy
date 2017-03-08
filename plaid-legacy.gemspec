@@ -9,10 +9,10 @@ Gem::Specification.new do |spec|
   spec.authors       = ['Oleg Dashevskii']
   spec.email         = ['olegdashevskii@gmail.com']
 
-  spec.summary       = 'Ruby bindings for Plaid'
-  spec.description   = 'Ruby gem wrapper for the Plaid API. Read more at the ' \
+  spec.summary       = 'Ruby bindings for Plaid\'s legacy API'
+  spec.description   = 'Ruby gem wrapper for the Plaid\'s legacy API. Read more at the ' \
                        'homepage, the wiki, or in the Plaid documentation.'
-  spec.homepage      = 'https://github.com/plaid/plaid-ruby'
+  spec.homepage      = 'https://github.com/plaid/plaid-ruby-legacy'
   spec.license       = 'MIT'
 
   spec.files         = `git ls-files -z`.split("\x0").reject do |f|

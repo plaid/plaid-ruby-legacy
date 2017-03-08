@@ -1,6 +1,6 @@
-# Plaid [![Build Status](https://travis-ci.org/plaid/plaid-ruby-legacy-legacy.svg)](https://travis-ci.org/plaid/plaid-ruby-legacy) [![Gem Version](https://badge.fury.io/rb/plaid.svg)](http://badge.fury.io/rb/plaid)
+# plaid-ruby-legacy [![Build Status](https://travis-ci.org/plaid/plaid-ruby-legacy-legacy.svg)](https://travis-ci.org/plaid/plaid-ruby-legacy) [![Gem Version](https://badge.fury.io/rb/plaid-legacy.svg)](http://badge.fury.io/rb/plaid-legacy)
 
-Ruby bindings for the Plaid API.
+Ruby bindings for the Plaid's legacy API.
 
 ## Installation
 
@@ -210,7 +210,7 @@ res  = Plaid::Institution.search(query: 'c')         # Lookup by name
 
 ### Webhooks
 
-You can register to receive [Webhooks](https://plaid.com/docs/api/#webhook) from Plaid when your users have new events. If you do, you'll receive `POST` requests with JSON.
+You can register to receive [Webhooks](https://plaid.com/docs/legacy/api/#webhook) from Plaid when your users have new events. If you do, you'll receive `POST` requests with JSON.
 
 E.g. Initial Transaction Webhook:
 ```json
@@ -311,7 +311,7 @@ Any methods making API calls will result in an exception raised unless the respo
 `Plaid::ServerError` is raised when status code is "50X: Server Error".
 
 Read more about response codes and their meaning in the
-[Plaid documentation](https://plaid.com/docs/api/#response-codes).
+[Plaid documentation](https://plaid.com/docs/legacy/api/#response-codes).
 
 ## Development
 

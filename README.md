@@ -1,4 +1,4 @@
-# plaid-ruby-legacy [![Build Status](https://travis-ci.org/plaid/plaid-ruby-legacy-legacy.svg)](https://travis-ci.org/plaid/plaid-ruby-legacy) [![Gem Version](https://badge.fury.io/rb/plaid-legacy.svg)](http://badge.fury.io/rb/plaid-legacy)
+# plaid-ruby-legacy [![Circle CI](https://circleci.com/gh/plaid/plaid-ruby-legacy.svg?style=svg&circle-token=f8f8fa32c0eeac3b66473c623596d067ee50f899)](https://circleci.com/gh/plaid/plaid-ruby-legacy) [![Gem Version](https://badge.fury.io/rb/plaid-legacy.svg)](http://badge.fury.io/rb/plaid-legacy)
 
 Ruby bindings for the Plaid's legacy API.
 

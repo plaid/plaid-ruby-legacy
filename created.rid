@@ -1,0 +1,20 @@
+Tue, 21 Mar 2017 12:30:12 +0700
+README.md	Tue, 21 Mar 2017 12:30:05 +0700
+LICENSE	Tue, 21 Mar 2017 12:30:05 +0700
+UPGRADING.md	Tue, 21 Mar 2017 12:30:05 +0700
+CONTRIBUTING.md	Tue, 21 Mar 2017 12:30:05 +0700
+CHANGELOG.md	Tue, 21 Mar 2017 12:30:05 +0700
+lib/plaid.rb	Tue, 21 Mar 2017 12:30:05 +0700
+lib/plaid/account.rb	Tue, 21 Mar 2017 12:30:05 +0700
+lib/plaid/category.rb	Tue, 21 Mar 2017 12:30:05 +0700
+lib/plaid/client.rb	Tue, 21 Mar 2017 12:30:05 +0700
+lib/plaid/connector.rb	Tue, 21 Mar 2017 12:30:05 +0700
+lib/plaid/errors.rb	Tue, 21 Mar 2017 12:30:05 +0700
+lib/plaid/income.rb	Tue, 21 Mar 2017 12:30:05 +0700
+lib/plaid/info.rb	Tue, 21 Mar 2017 12:30:05 +0700
+lib/plaid/institution.rb	Tue, 21 Mar 2017 12:30:05 +0700
+lib/plaid/risk.rb	Tue, 21 Mar 2017 12:30:05 +0700
+lib/plaid/transaction.rb	Tue, 21 Mar 2017 12:30:05 +0700
+lib/plaid/user.rb	Tue, 21 Mar 2017 12:30:05 +0700
+lib/plaid/version.rb	Tue, 21 Mar 2017 12:30:05 +0700
+lib/plaid/webhook.rb	Tue, 21 Mar 2017 12:30:05 +0700

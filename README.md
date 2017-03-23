@@ -22,7 +22,7 @@ The gem supports Ruby 2.x only.
 
 ## Usage
 
-This gem wraps the Plaid API, which is fully described in the [documentation](http://plaid.com/docs).
+This gem wraps the Plaid legacy API, which is fully described in the [documentation](https://plaid.com/docs/legacy/api/).
 
 The RubyDoc for the gem is available [here](http://plaid.github.io/plaid-ruby-legacy).
 

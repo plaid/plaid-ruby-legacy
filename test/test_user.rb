@@ -7,9 +7,9 @@ module ProductTests
   end
 
   def test_load
-    user = Plaid::User.load(product, 't0k3n')
+    user = PlaidHack::User.load(product, 't0k3n')
 
-    assert_kind_of Plaid::User, user
+    assert_kind_of PlaidHack::User, user
     assert_equal product, user.product
     assert_equal 't0k3n', user.access_token
     refute user.mfa?
@@ -17,19 +17,19 @@ module ProductTests
     assert_nil user.mfa
 
     assert_raises ArgumentError do
-      Plaid::User.load(:bad_product, 't0k3n')
+      PlaidHack::User.load(:bad_product, 't0k3n')
     end
   end
 
   def test_load_custom_client
-    client = Plaid::Client.new
-    user = Plaid::User.load(product, 't0k3n', client: client)
+    client = PlaidHack::Client.new
+    user = PlaidHack::User.load(product, 't0k3n', client: client)
 
     assert_same client, user.client
   end
 
   def test_delete
-    user = Plaid::User.load(product, 't0k3n')
+    user = PlaidHack::User.load(product, 't0k3n')
 
     stub_api :delete, product,
              body: credentials,
@@ -40,7 +40,7 @@ module ProductTests
   end
 
   def test_balance
-    user = Plaid::User.load(product, 't0k3n')
+    user = PlaidHack::User.load(product, 't0k3n')
 
     stub_api :post, 'balance', body: credentials, response: :connect_add
 
@@ -49,9 +49,9 @@ module ProductTests
   end
 
   def test_for_product
-    user = Plaid::User.load(product, 't0k3n')
+    user = PlaidHack::User.load(product, 't0k3n')
 
-    product2 = Plaid::PRODUCTS.reject { |p| p == product }.first
+    product2 = PlaidHack::PRODUCTS.reject { |p| p == product }.first
 
     another = user.for_product(product2)
 
@@ -61,10 +61,10 @@ module ProductTests
   end
 
   def test_for_product_with_custom_client
-    client = Plaid::Client.new
-    user = Plaid::User.load(product, 't0k3n', client: client)
+    client = PlaidHack::Client.new
+    user = PlaidHack::User.load(product, 't0k3n', client: client)
 
-    product2 = Plaid::PRODUCTS.reject { |p| p == product }.first
+    product2 = PlaidHack::PRODUCTS.reject { |p| p == product }.first
 
     another = user.for_product(product2)
 
@@ -72,7 +72,7 @@ module ProductTests
   end
 
   def test_upgrade
-    user = Plaid::User.load(product, 't0k3n')
+    user = PlaidHack::User.load(product, 't0k3n')
 
     body = credentials.merge(upgrade_to: 'connect')
 
@@ -94,10 +94,10 @@ module ProductTests
     stub_api :post, 'exchange_token',
              body: body, response: '{"access_token": "3x<hang3d"}'
 
-    user = Plaid::User.exchange_token('pu61i< T<>k3N',
+    user = PlaidHack::User.exchange_token('pu61i< T<>k3N',
                                       product: product)
 
-    assert_kind_of Plaid::User, user
+    assert_kind_of PlaidHack::User, user
     assert_equal '3x<hang3d', user.access_token
     assert_equal product, user.product
     assert_nil user.stripe_bank_account_token
@@ -111,10 +111,10 @@ module ProductTests
     stub_api :post, 'exchange_token',
              body: body, response: :exchange_token
 
-    user = Plaid::User.exchange_token('pu61i< T<>k3N', 'abcdef',
+    user = PlaidHack::User.exchange_token('pu61i< T<>k3N', 'abcdef',
                                       product: product)
 
-    assert_kind_of Plaid::User, user
+    assert_kind_of PlaidHack::User, user
     assert_equal '3x<hang3d', user.access_token
     assert_equal product, user.product
     assert_equal user.stripe_bank_account_token, 'SBAT'
@@ -126,7 +126,7 @@ module ProductTests
     stub_api :post, product, body: params_for_create, response: :mfa_questions,
                              status: 201
 
-    user = Plaid::User.create(product, :wells, 'plaid_test', 'plaid_good')
+    user = PlaidHack::User.create(product, :wells, 'plaid_test', 'plaid_good')
     assert_nil user.accounts
 
     assert_predicate user, :mfa?
@@ -164,7 +164,7 @@ module ProductTests
     stub_api :post, product, body: body, response: :mfa_list,
                              status: 201
 
-    user = Plaid::User.create(product, :wells, 'plaid_test', 'plaid_good',
+    user = PlaidHack::User.create(product, :wells, 'plaid_test', 'plaid_good',
                               options: { list: true })
 
     assert_predicate user, :mfa?
@@ -196,7 +196,7 @@ module ProductTests
   end
 
   def test_patch_mfa
-    user = Plaid::User.load(product, 't0k3n')
+    user = PlaidHack::User.load(product, 't0k3n')
 
     stub_api :patch, product, response: :mfa_list, status: 201
     user.update('new_user', 'new_password')
@@ -233,7 +233,7 @@ module ProductTests
     stub_api :post, 'exchange_token',
              body: body, response: '{"access_token": "3x<hang3d"}'
 
-    user = Plaid::User.exchange_token('pu61i< T<>k3N',
+    user = PlaidHack::User.exchange_token('pu61i< T<>k3N',
                                       product: product,
                                       client: client)
 
@@ -244,7 +244,7 @@ module ProductTests
   # Here we test for this exception, and this method gets overriden in
   # PlaidConnectUserTest.
   def test_update_webhook
-    user = Plaid::User.load(product, 't0k3n')
+    user = PlaidHack::User.load(product, 't0k3n')
 
     assert_raises ArgumentError do
       user.update_webhook('http://example.org/hook')
@@ -277,18 +277,18 @@ module ProductTests
     }
 
     stub_api :post, product.to_s, body: body, response: response
-    user = Plaid::User.create(product, :wells, 'plaid_test', 'plaid_good',
+    user = PlaidHack::User.create(product, :wells, 'plaid_test', 'plaid_good',
                               client: client)
 
     assert_same client, user.client
   end
 
   def custom_client
-    Plaid::Client.new(env: :tartan, client_id: 'boo', secret: 'moo')
+    PlaidHack::Client.new(env: :tartan, client_id: 'boo', secret: 'moo')
   end
 
   def run_update(fixture_name)
-    user = Plaid::User.load(product, 't0k3n')
+    user = PlaidHack::User.load(product, 't0k3n')
 
     body = credentials.merge('password' => 'my_password', 'pin' => '9999',
                              'username' => 'my_user')
@@ -309,15 +309,15 @@ module ProductTests
   end
 
   def check_accounts(expected_count, accounts, &block)
-    check_collection expected_count, accounts, Plaid::Account, &block
+    check_collection expected_count, accounts, PlaidHack::Account, &block
   end
 
   def check_transactions(expected_count, txs, &block)
-    check_collection expected_count, txs, Plaid::Transaction, &block
+    check_collection expected_count, txs, PlaidHack::Transaction, &block
   end
 
   def check_user(user)
-    assert_instance_of Plaid::User, user
+    assert_instance_of PlaidHack::User, user
     refute_nil user.access_token
     refute_predicate user, :mfa?
     assert_nil user.mfa_type
@@ -341,7 +341,7 @@ class PlaidConnectUserTest < MiniTest::Test
 
     stub_api :post, 'connect', body: body, response: :connect_add
 
-    user = Plaid::User.create(:connect, :wells, 'plaid_test', 'plaid_good',
+    user = PlaidHack::User.create(:connect, :wells, 'plaid_test', 'plaid_good',
                               options: { login_only: false })
 
     check_user user
@@ -355,7 +355,7 @@ class PlaidConnectUserTest < MiniTest::Test
 
     stub_api :post, 'connect', body: body, response: :connect_add_trans
 
-    user = Plaid::User.create(:connect, :wells, 'plaid_test', 'plaid_good')
+    user = PlaidHack::User.create(:connect, :wells, 'plaid_test', 'plaid_good')
     check_user user
     check_accounts 4, user.accounts
     check_transactions 16, user.initial_transactions
@@ -366,7 +366,7 @@ class PlaidConnectUserTest < MiniTest::Test
   end
 
   def test_transactions
-    user = Plaid::User.load(:connect, 't0k3n')
+    user = PlaidHack::User.load(:connect, 't0k3n')
 
     stub_api :post, 'connect/get',
              body: credentials.merge('options' => '{"pending":false}'),
@@ -379,7 +379,7 @@ class PlaidConnectUserTest < MiniTest::Test
   end
 
   def test_transactions_arguments
-    user = Plaid::User.load(:connect, 't0k3n')
+    user = PlaidHack::User.load(:connect, 't0k3n')
 
     body = credentials.merge 'options' =>
       '{"pending":false,"account":"123456",'\
@@ -400,7 +400,7 @@ class PlaidConnectUserTest < MiniTest::Test
 
   # Overrides the method from ProductTests.
   def test_update_webhook
-    user = Plaid::User.load(:connect, 't0k3n')
+    user = PlaidHack::User.load(:connect, 't0k3n')
 
     body = credentials.merge('options' =>
       '{"webhook":"http://example.org/hook"}')
@@ -425,7 +425,7 @@ class PlaidAuthUserTest < MiniTest::Test
   def test_create_user
     stub_api :post, 'auth', body: params_for_create, response: :auth_add
 
-    user = Plaid::User.create(:auth, :wells, 'plaid_test', 'plaid_good')
+    user = PlaidHack::User.create(:auth, :wells, 'plaid_test', 'plaid_good')
     check_user user
     check_accounts 4, user.accounts do |acc|
       refute_nil acc.numbers
@@ -478,7 +478,7 @@ class PlaidAuthUserTest < MiniTest::Test
   private
 
   def auth_user
-    @auth_user ||= Plaid::User.load(:auth, 't0k3n')
+    @auth_user ||= PlaidHack::User.load(:auth, 't0k3n')
   end
 end
 
@@ -496,12 +496,12 @@ class PlaidInfoUserTest < MiniTest::Test
   def test_create_user
     stub_api :post, 'info', body: params_for_create, response: :info_add
 
-    user = Plaid::User.create(:info, :wells, 'plaid_test', 'plaid_good')
+    user = PlaidHack::User.create(:info, :wells, 'plaid_test', 'plaid_good')
     check_user user
     check_accounts 4, user.accounts
 
     refute_nil user.info
-    assert_kind_of Plaid::Info, user.info
+    assert_kind_of PlaidHack::Info, user.info
     assert_equal ['Kelly Walters'], user.info.names
   end
 
@@ -538,7 +538,7 @@ class PlaidInfoUserTest < MiniTest::Test
   private
 
   def info_user
-    @info_user ||= Plaid::User.load(:info, 't0k3n')
+    @info_user ||= PlaidHack::User.load(:info, 't0k3n')
   end
 
   def stub_info_get
@@ -560,12 +560,12 @@ class PlaidIncomeUserTest < MiniTest::Test
   def test_create_user
     stub_api :post, 'income', body: params_for_create, response: :income_add
 
-    user = Plaid::User.create(:income, :wells, 'plaid_test', 'plaid_good')
+    user = PlaidHack::User.create(:income, :wells, 'plaid_test', 'plaid_good')
     check_user user
     check_accounts 4, user.accounts
 
     refute_nil user.income
-    assert_kind_of Plaid::Income, user.income
+    assert_kind_of PlaidHack::Income, user.income
     assert_equal 56_000, user.income.last_year_income
   end
 
@@ -596,13 +596,13 @@ class PlaidIncomeUserTest < MiniTest::Test
 
   def test_update
     user = run_update(:income_add)
-    assert_kind_of Plaid::Income, user.income
+    assert_kind_of PlaidHack::Income, user.income
   end
 
   private
 
   def income_user
-    @income_user ||= Plaid::User.load(:income, 't0k3n')
+    @income_user ||= PlaidHack::User.load(:income, 't0k3n')
   end
 
   def stub_income_get
@@ -624,11 +624,11 @@ class PlaidRiskUserTest < MiniTest::Test
   def test_create_user
     stub_api :post, 'risk', body: params_for_create, response: :risk_add
 
-    user = Plaid::User.create(:risk, :wells, 'plaid_test', 'plaid_good')
+    user = PlaidHack::User.create(:risk, :wells, 'plaid_test', 'plaid_good')
     check_user user
     check_accounts 4, user.accounts
 
-    assert_kind_of Plaid::Risk, user.accounts[0].risk
+    assert_kind_of PlaidHack::Risk, user.accounts[0].risk
     assert_equal 0.79, user.accounts[0].risk.score
   end
 
@@ -665,7 +665,7 @@ class PlaidRiskUserTest < MiniTest::Test
   private
 
   def risk_user
-    @risk_user ||= Plaid::User.load(:risk, 't0k3n')
+    @risk_user ||= PlaidHack::User.load(:risk, 't0k3n')
   end
 
   def stub_risk_get

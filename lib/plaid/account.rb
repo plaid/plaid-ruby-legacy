@@ -1,6 +1,6 @@
 require 'plaid/risk'
 
-module Plaid
+module PlaidHack
   # Public: Representation of user account data.
   class Account
     # Public: The String unique ID of the account. E.g.
@@ -19,7 +19,7 @@ module Plaid
     # The Available Balance is the Current Balance less any outstanding holds
     # or debits that have not yet posted to the account. Note that not all
     # institutions calculate the Available Balance. In the case that Available
-    # Balance is unavailable from the institution, Plaid will either return an
+    # Balance is unavailable from the institution, PlaidHack will either return an
     # Available Balance value of null or only return a Current Balance.
     attr_reader :available_balance
 
@@ -28,7 +28,7 @@ module Plaid
 
     # Public: The Hash with additional information pertaining to the account
     # such as the limit, name, or last few digits of the account number. E.g.
-    # {"name": "Plaid Savings", "number": "9606" }.
+    # {"name": "PlaidHack Savings", "number": "9606" }.
     attr_reader :meta
 
     # Public: The Symbol account type. One of :depository, :credit, :loan,
@@ -37,7 +37,7 @@ module Plaid
 
     # Public: The String account subtype. E.g. "savings".
     #
-    # Read more about subtypes in the Plaid API docs.
+    # Read more about subtypes in the PlaidHack API docs.
     attr_reader :subtype
 
     # Public: The Hash with account and routing numbers for the account.
@@ -67,17 +67,17 @@ module Plaid
       end
 
       if (risk = hash['risk'])
-        @risk = Plaid::Risk.new(risk)
+        @risk = PlaidHack::Risk.new(risk)
       end
 
-      @numbers = Plaid.symbolize_hash(hash['numbers'])
+      @numbers = PlaidHack.symbolize_hash(hash['numbers'])
     end
 
     # Public: Get a String representation of the account.
     #
     # Returns a String.
     def inspect
-      "#<Plaid::Account id=#{id.inspect}, type=#{type.inspect}, " \
+      "#<PlaidHack::Account id=#{id.inspect}, type=#{type.inspect}, " \
       "name=#{name.inspect}, institution=#{institution.inspect}>"
     end
 
@@ -129,7 +129,7 @@ module Plaid
       # A sanity check. Nobody would want to update information from totally
       # different account!
       if id != another.id
-        raise ArgumentError, 'Plaid::Account#update_from: id != another.id!'
+        raise ArgumentError, 'PlaidHack::Account#update_from: id != another.id!'
       end
 
       %i(item_id meta name type subtype institution available_balance

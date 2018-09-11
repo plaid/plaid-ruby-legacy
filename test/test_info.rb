@@ -1,6 +1,6 @@
 require 'test_helper'
 
-# The test for Plaid::Info.
+# The test for PlaidHack::Info.
 class PlaidInfoTest < MiniTest::Test
   include TestHelpers
 
@@ -9,7 +9,7 @@ class PlaidInfoTest < MiniTest::Test
   end
 
   def test_initialize
-    info = Plaid::Info.new(parsed_info_data)
+    info = PlaidHack::Info.new(parsed_info_data)
 
     assert_equal ['Frodo Baggins', 'Samwise Gamgee'], info.names
 
@@ -28,9 +28,9 @@ class PlaidInfoTest < MiniTest::Test
   end
 
   def test_string_representation
-    info = Plaid::Info.new(parsed_info_data)
+    info = PlaidHack::Info.new(parsed_info_data)
 
-    str = '#<Plaid::Info names=["Frodo Baggins", "Samwise Gamgee"], ...>'
+    str = '#<PlaidHack::Info names=["Frodo Baggins", "Samwise Gamgee"], ...>'
 
     assert_equal str, info.to_s
     assert_equal str, info.inspect

@@ -1,3 +1,3 @@
-module Plaid
+module PlaidHack
   VERSION = '3.0.0'.freeze
 end

@@ -10,18 +10,18 @@ module TestHelpers
   end
 
   def reset_config
-    Plaid.config do |_|
+    PlaidHack.config do |_|
     end
   end
 
   def tartan
-    Plaid.config do |p|
+    PlaidHack.config do |p|
       p.env = :tartan
     end
   end
 
   def full_test_credentials
-    Plaid.config do |p|
+    PlaidHack.config do |p|
       p.env = :tartan
       p.client_id = 'test_id'
       p.secret = 'test_secret'

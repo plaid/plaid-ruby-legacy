@@ -1,4 +1,4 @@
-module Plaid
+module PlaidHack
   # Public: Representation of risk data (per account).
   class Risk
     # Public: The Float comprehensive risk score associated with the account,
@@ -16,14 +16,14 @@ module Plaid
     # fields - The Hash with fields.
     def initialize(fields)
       @score = fields['score']
-      @reason = Plaid.symbolize_hash(fields['reason'])
+      @reason = PlaidHack.symbolize_hash(fields['reason'])
     end
 
     # Public: Get a String representation of Risk.
     #
     # Returns a String.
     def inspect
-      "#<Plaid::Risk score=#{score.inspect}, ..."
+      "#<PlaidHack::Risk score=#{score.inspect}, ..."
     end
 
     # Public: Get a String representation of Risk.

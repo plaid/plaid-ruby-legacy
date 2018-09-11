@@ -1,6 +1,6 @@
 require 'test_helper'
 
-# The test for Plaid::Account.
+# The test for PlaidHack::Account.
 class PlaidAccountTest < MiniTest::Test
   def test_initialization
     check_basic_data acc
@@ -15,15 +15,15 @@ class PlaidAccountTest < MiniTest::Test
   end
 
   def test_initialization_with_risk
-    a = Plaid::Account.new(account_data_with_risk)
+    a = PlaidHack::Account.new(account_data_with_risk)
     check_basic_data a
 
-    assert_kind_of Plaid::Risk, a.risk
+    assert_kind_of PlaidHack::Risk, a.risk
   end
 
   def test_string_representation
-    s = '#<Plaid::Account id="QPO8Jo8vdDHMepg41PBwckXm4KdK1yUdmXOwK", ' \
-        'type=:depository, name="Plaid Savings", institution=:chase>'
+    s = '#<PlaidHack::Account id="QPO8Jo8vdDHMepg41PBwckXm4KdK1yUdmXOwK", ' \
+        'type=:depository, name="PlaidHack Savings", institution=:chase>'
 
     assert_equal s, acc.to_s
     assert_equal s, acc.inspect
@@ -36,9 +36,9 @@ class PlaidAccountTest < MiniTest::Test
                             current_balance: 1200)
                .merge('risk' => { 'score' => 0.99 })
 
-    new_accounts = [Plaid::Account.new(new_data)]
+    new_accounts = [PlaidHack::Account.new(new_data)]
 
-    Plaid::Account.merge(accounts, new_accounts)
+    PlaidHack::Account.merge(accounts, new_accounts)
 
     assert_equal 1, accounts.size
     assert_equal 1000, accounts[0].available_balance
@@ -49,9 +49,9 @@ class PlaidAccountTest < MiniTest::Test
 
   def test_merge_adds_new_account
     accounts = [acc]
-    new_accounts = [Plaid::Account.new(account_data(id: '123456'))]
+    new_accounts = [PlaidHack::Account.new(account_data(id: '123456'))]
 
-    Plaid::Account.merge(accounts, new_accounts)
+    PlaidHack::Account.merge(accounts, new_accounts)
 
     assert_equal 2, accounts.size
     assert_equal 'QPO8Jo8vdDHMepg41PBwckXm4KdK1yUdmXOwK', accounts[0].id
@@ -62,7 +62,7 @@ class PlaidAccountTest < MiniTest::Test
     accounts = [acc_with_numbers]
     new_accounts = [acc]
 
-    Plaid::Account.merge(accounts, new_accounts)
+    PlaidHack::Account.merge(accounts, new_accounts)
 
     assert_equal 1, accounts.size
     assert_equal '021000021', accounts[0].numbers[:routing]
@@ -71,11 +71,11 @@ class PlaidAccountTest < MiniTest::Test
   private
 
   def acc
-    @acc ||= Plaid::Account.new(account_data)
+    @acc ||= PlaidHack::Account.new(account_data)
   end
 
   def acc_with_numbers
-    @acc_with_numbers ||= Plaid::Account.new(account_data_with_numbers)
+    @acc_with_numbers ||= PlaidHack::Account.new(account_data_with_numbers)
   end
 
   def account_data(available_balance: 1203.42, current_balance: 1274.93,
@@ -87,7 +87,7 @@ class PlaidAccountTest < MiniTest::Test
       'balance' => { 'available' => available_balance,
                      'current' => current_balance },
       'institution_type' => 'chase',
-      'meta' => { 'name' => 'Plaid Savings', 'number' => '9606' },
+      'meta' => { 'name' => 'PlaidHack Savings', 'number' => '9606' },
       'subtype' => 'savings',
       'type' => 'depository'
     }
@@ -120,8 +120,8 @@ class PlaidAccountTest < MiniTest::Test
     assert_equal 1203.42, a.available_balance
     assert_equal 1274.93, a.current_balance
     assert_equal :chase, a.institution
-    assert_equal 'Plaid Savings', a.name
-    assert_equal({ 'name' => 'Plaid Savings', 'number' => '9606' }, a.meta)
+    assert_equal 'PlaidHack Savings', a.name
+    assert_equal({ 'name' => 'PlaidHack Savings', 'number' => '9606' }, a.meta)
     assert_equal :depository, a.type
     assert_equal 'savings', a.subtype
   end

@@ -1,7 +1,7 @@
 # coding: utf-8
 require 'date'
 
-module Plaid
+module PlaidHack
   # Public: Representation of a transaction.
   class Transaction
     # Public: The String unique ID of the transaction. E.g.
@@ -47,9 +47,9 @@ module Plaid
     # pending or unsettled.
     attr_reader :pending
 
-    # Public: The Hash with numeric representation of Plaid confidence
+    # Public: The Hash with numeric representation of PlaidHack confidence
     # in the meta data attached to the transaction. In the case of a
-    # score <.9 Plaid will default to guaranteed and known
+    # score <.9 PlaidHack will default to guaranteed and known
     # information. E.g.
     #
     # {location: {
@@ -92,14 +92,14 @@ module Plaid
       @date = fields['date'] && Date.parse(fields['date'])
       @amount = fields['amount']
       @name = fields['name']
-      @meta = Plaid.symbolize_hash(fields['meta'])
+      @meta = PlaidHack.symbolize_hash(fields['meta'])
       @location = (@meta && @meta[:location]) || {}
       @pending = fields['pending']
       @reference_number = fields['_reference_number']
       @pending_transaction_id = fields['_pendingTransaction']
-      @score = Plaid.symbolize_hash(fields['score'])
+      @score = PlaidHack.symbolize_hash(fields['score'])
 
-      @type = Plaid.symbolize_hash(fields['type'], values: true)
+      @type = PlaidHack.symbolize_hash(fields['type'], values: true)
       @category_hierarchy = fields['category']
       @category_id = fields['category_id']
     end
@@ -115,7 +115,7 @@ module Plaid
     #
     # Returns a String.
     def inspect
-      "#<Plaid::Transaction id=#{id.inspect}, account_id=#{account_id.inspect}, " \
+      "#<PlaidHack::Transaction id=#{id.inspect}, account_id=#{account_id.inspect}, " \
       "date=#{date}, amount=#{amount.inspect}, name=#{name.inspect}, " \
       "pending=#{pending.inspect}>"
     end

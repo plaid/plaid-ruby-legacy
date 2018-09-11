@@ -1,6 +1,6 @@
 # plaid-ruby-legacy [![Circle CI](https://circleci.com/gh/plaid/plaid-ruby-legacy.svg?style=svg&circle-token=f8f8fa32c0eeac3b66473c623596d067ee50f899)](https://circleci.com/gh/plaid/plaid-ruby-legacy) [![Gem Version](https://badge.fury.io/rb/plaid-legacy.svg)](http://badge.fury.io/rb/plaid-legacy)
 
-Ruby bindings for the Plaid's legacy API.
+Ruby bindings for the PlaidHack's legacy API.
 
 ## Installation
 
@@ -22,18 +22,18 @@ The gem supports Ruby 2.x only.
 
 ## Usage
 
-This gem wraps the Plaid legacy API, which is fully described in the [documentation](https://plaid.com/docs/legacy/api/).
+This gem wraps the PlaidHack legacy API, which is fully described in the [documentation](https://plaid.com/docs/legacy/api/).
 
 The RubyDoc for the gem is available [here](http://plaid.github.io/plaid-ruby-legacy).
 
-### Configuring access to Plaid
+### Configuring access to PlaidHack
 
 Configure the gem with your client id, secret, and the environment you would like to use.
 
 ```ruby
-Plaid.config do |p|
-  p.client_id = '<<< Plaid provided client ID >>>'
-  p.secret = '<<< Plaid provided secret key >>>'
+PlaidHack.config do |p|
+  p.client_id = '<<< PlaidHack provided client ID >>>'
+  p.secret = '<<< PlaidHack provided secret key >>>'
   p.env = :tartan  # or :production
 end
 ```
@@ -41,7 +41,7 @@ end
 ### Creating a new User
 
 ```ruby
-user = Plaid::User.create(:connect, 'wells', 'plaid_test', 'plaid_good')
+user = PlaidHack::User.create(:connect, 'wells', 'plaid_test', 'plaid_good')
 ```
 
 This call will do a `POST /connect`. The response will contain account information and transactions
@@ -50,17 +50,17 @@ for last 30 days, which you can find in `user.accounts` and `user.initial_transa
 If the authentication requires a pin, you can pass it as a named parameter:
 
 ```ruby
-user = Plaid::User.create(:income, 'usaa', 'plaid_test', 'plaid_good', pin: '1234')
+user = PlaidHack::User.create(:income, 'usaa', 'plaid_test', 'plaid_good', pin: '1234')
 ```
 
 To add options such as `login_only` or `webhook`, use `options` argument:
 
 ```ruby
-user = Plaid::User.create(:connect, 'wells', 'plaid_test', 'plaid_good',
+user = PlaidHack::User.create(:connect, 'wells', 'plaid_test', 'plaid_good',
                           options: { login_only: true, webhook: 'https://example.org/callbacks/plaid')
 ```
 
-The first argument for `Plaid::User.create` is always a product you want to add the user to (like,
+The first argument for `PlaidHack::User.create` is always a product you want to add the user to (like,
 `:connect`, `:auth`, `:info`, `:income`, or `:risk`). The user object is bound to the product, and subsequent
 calls like `user.update` or `user.delete` are done for this product (i.e., `PATCH /info` and `DELETE /info`
 for `:info`).
@@ -70,23 +70,23 @@ for `:info`).
 If you've already added the user and saved the access token, you should use `User.load`:
 
 ```ruby
-user = Plaid::User.load(:risk, 'access_token')
+user = PlaidHack::User.load(:risk, 'access_token')
 ```
 
 This won't make any API requests by itself, just set the product and the token in the `User` instance.
 
-### Exchanging a Link public token for a Plaid access token
+### Exchanging a Link public token for a PlaidHack access token
 
 If you have a Link public token, use `User.exchange_token`:
 
 ```ruby
-user = Plaid::User.exchange_token('public_token')   # bound to :connect product
+user = PlaidHack::User.exchange_token('public_token')   # bound to :connect product
 ```
 
 With more options:
 
 ```ruby
-user2 = Plaid::User.exchange_token('public_token', 'account_id', product: :auth)
+user2 = PlaidHack::User.exchange_token('public_token', 'account_id', product: :auth)
 ```
 
 If you want to [move money via Stripe's ACH
@@ -96,11 +96,11 @@ instance will have the `stripe_bank_account_token` attribute set.
 
 ### Upgrading and changing the current product
 
-Plaid supports upgrading a user, i.e. adding it to another product:
+PlaidHack supports upgrading a user, i.e. adding it to another product:
 
 ```ruby
 # Create a user in Connect
-user = Plaid::User.create(:connect, 'wells', 'plaid_test', 'plaid_good')
+user = PlaidHack::User.create(:connect, 'wells', 'plaid_test', 'plaid_good')
 
 # Upgrade this user, attaching it to Auth as well (makes a request to /upgrade).
 auth_user = user.upgrade(:auth)
@@ -113,7 +113,7 @@ same access token, but different current product, use `User.for_product`:
 
 ```ruby
 # Get a user attached to Connect
-user = Plaid::User.load(:connect, 'access_token')
+user = PlaidHack::User.load(:connect, 'access_token')
 
 # Makes no requests
 info_user = user.for_product(:info)
@@ -122,7 +122,7 @@ info_user = user.for_product(:info)
 Basically it's the same as:
 
 ```ruby
-info_user = Plaid::User.load(:info, 'access_token')
+info_user = PlaidHack::User.load(:info, 'access_token')
 ```
 
 ### MFA (Multi-Factor Authorization)
@@ -131,7 +131,7 @@ If MFA is requested by the financial institution, the `User.create` call would b
 a bit differently:
 
 ```ruby
-user = Plaid::User.create(:auth, 'wells', 'plaid_test', 'plaid_good')
+user = PlaidHack::User.create(:auth, 'wells', 'plaid_test', 'plaid_good')
 
 user.accounts   #=> nil
 user.mfa?       #=> true
@@ -147,7 +147,7 @@ user.mfa_step('matz')        # This is the correct answer!
 user.mfa?       #=> false
 user.mfa_type   #=> nil
 user.mfa        #=> nil
-user.accounts   #=> [<Plaid::Account ...>, ...]
+user.accounts   #=> [<PlaidHack::Account ...>, ...]
 ```
 
 The code-based MFA workflow is similar. Basically you need to call `user.mfa_step(...)`
@@ -193,24 +193,24 @@ Same goes for other methods, except `User#transactions` and `User#balance` which
 You can request category information:
 
 ```ruby
-cats = Plaid::Category.all             # Array of all known categories
-cat  = Plaid::Category.get('17001013') # A single category by its ID
+cats = PlaidHack::Category.all             # Array of all known categories
+cat  = PlaidHack::Category.get('17001013') # A single category by its ID
 ```
 
 ### Institutions
 
-Financial institution information is available via `Plaid::Institution`.
+Financial institution information is available via `PlaidHack::Institution`.
 
 ```ruby
-insts = Plaid::Institution.all(count: 20, offset: 20)        # A page
-inst  = Plaid::Institution.get('5301a93ac140de84910000e0')   # A single institution by its ID
+insts = PlaidHack::Institution.all(count: 20, offset: 20)        # A page
+inst  = PlaidHack::Institution.get('5301a93ac140de84910000e0')   # A single institution by its ID
 
-res  = Plaid::Institution.search(query: 'c')         # Lookup by name
+res  = PlaidHack::Institution.search(query: 'c')         # Lookup by name
 ```
 
 ### Webhooks
 
-You can register to receive [Webhooks](https://plaid.com/docs/legacy/api/#webhook) from Plaid when your users have new events. If you do, you'll receive `POST` requests with JSON.
+You can register to receive [Webhooks](https://plaid.com/docs/legacy/api/#webhook) from PlaidHack when your users have new events. If you do, you'll receive `POST` requests with JSON.
 
 E.g. Initial Transaction Webhook:
 ```json
@@ -222,10 +222,10 @@ E.g. Initial Transaction Webhook:
 }
 ```
 
-You should parse that JSON into a Ruby Hash with String keys (eg. `webhook_hash = JSON.parse(json_string)`). Then, you can convert that Hash into a Ruby object using `Plaid::Webhook`:
+You should parse that JSON into a Ruby Hash with String keys (eg. `webhook_hash = JSON.parse(json_string)`). Then, you can convert that Hash into a Ruby object using `PlaidHack::Webhook`:
 
 ```ruby
-webhook = Plaid::Webhook.new(webhook_hash)
+webhook = PlaidHack::Webhook.new(webhook_hash)
 
 # Was that the Initial Transaction Webhook?
 webhook.initial_transaction?
@@ -259,28 +259,28 @@ error = webhook.error
 
 ### Custom clients
 
-It's possible to use several Plaid environments and/or credentials in one app by
-explicit instantiation of `Plaid::Client`:
+It's possible to use several PlaidHack environments and/or credentials in one app by
+explicit instantiation of `PlaidHack::Client`:
 
 ```ruby
-# Configuring the global client (Plaid.client) which is used by default
-Plaid.config do |p|
+# Configuring the global client (PlaidHack.client) which is used by default
+PlaidHack.config do |p|
   p.client_id = 'client_id_1'
   p.secret = 'secret_1'
   p.env = :tartan
 end
 
 # Creating a custom client
-api = Plaid::Client.new(client_id: 'client_id_2', secret: 'secret_2', env: :production)
+api = PlaidHack::Client.new(client_id: 'client_id_2', secret: 'secret_2', env: :production)
 
 # Tartan user (using default client)
-user1 = Plaid::User.create(:connect, 'wells', 'plaid_test', 'plaid_good')
+user1 = PlaidHack::User.create(:connect, 'wells', 'plaid_test', 'plaid_good')
 
 # Api user (using api client)
-user2 = Plaid::User.create(:connect, 'wells', 'plaid_test', 'plaid_good', client: api)
+user2 = PlaidHack::User.create(:connect, 'wells', 'plaid_test', 'plaid_good', client: api)
 
 # Lookup an institution in production
-res = Plaid::Institution.search(query: 'c', client: api)
+res = PlaidHack::Institution.search(query: 'c', client: api)
 ```
 
 The `client` option can be passed to the following methods:
@@ -300,18 +300,18 @@ The `client` option can be passed to the following methods:
 Any methods making API calls will result in an exception raised unless the response code is "200: Success" or
 "201: MFA Required".
 
-`Plaid::BadRequestError` is raised when status code is "400: Bad Request".
+`PlaidHack::BadRequestError` is raised when status code is "400: Bad Request".
 
-`Plaid::UnauthorizedError` is raised when status code is "401: Unauthorized".
+`PlaidHack::UnauthorizedError` is raised when status code is "401: Unauthorized".
 
-`Plaid::RequestFailedError` is raised when status code is "402: Request Failed".
+`PlaidHack::RequestFailedError` is raised when status code is "402: Request Failed".
 
-`Plaid::NotFoundError` is raised when status code is "404: Cannot be Found".
+`PlaidHack::NotFoundError` is raised when status code is "404: Cannot be Found".
 
-`Plaid::ServerError` is raised when status code is "50X: Server Error".
+`PlaidHack::ServerError` is raised when status code is "50X: Server Error".
 
 Read more about response codes and their meaning in the
-[Plaid documentation](https://plaid.com/docs/legacy/api/#response-codes).
+[PlaidHack documentation](https://plaid.com/docs/legacy/api/#response-codes).
 
 ## Development
 

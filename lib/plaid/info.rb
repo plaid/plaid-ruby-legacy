@@ -1,4 +1,4 @@
-module Plaid
+module PlaidHack
   # Public: Representation of user information.
   class Info
     # Public: The Array of String user names.
@@ -30,15 +30,15 @@ module Plaid
     def initialize(fields)
       @names = fields['names']
       @emails = fields['emails'].map do |h|
-        symbolize_values Plaid.symbolize_hash(h), :type
+        symbolize_values PlaidHack.symbolize_hash(h), :type
       end
 
       @phone_numbers = fields['phone_numbers'].map do |h|
-        symbolize_values Plaid.symbolize_hash(h), :type
+        symbolize_values PlaidHack.symbolize_hash(h), :type
       end
 
       @addresses = fields['addresses'].map do |h|
-        Plaid.symbolize_hash(h)
+        PlaidHack.symbolize_hash(h)
       end
     end
 
@@ -46,7 +46,7 @@ module Plaid
     #
     # Returns a String.
     def inspect
-      "#<Plaid::Info names=#{names.inspect}, ...>"
+      "#<PlaidHack::Info names=#{names.inspect}, ...>"
     end
 
     # Public: Get a String representation of Info object.

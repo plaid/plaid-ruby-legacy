@@ -1,4 +1,4 @@
-module Plaid
+module PlaidHack
   # Public: Representation of Income data.
   class Income
     # Public: The class encapsulating an income stream.
@@ -7,7 +7,7 @@ module Plaid
       # E.g. 5700.
       attr_reader :monthly_income
 
-      # Public: The Float representation of Plaid's confidence in the income
+      # Public: The Float representation of PlaidHack's confidence in the income
       # data associated with this particular income stream, with 0 being
       # the lowest confidence and 1 being the highest. E.g. 0.9.
       attr_reader :confidence
@@ -34,7 +34,7 @@ module Plaid
       #
       # Returns a String.
       def inspect
-        "#<Plaid::Income::Stream name=#{name.inspect}, " \
+        "#<PlaidHack::Income::Stream name=#{name.inspect}, " \
           "monthly_income=#{monthly_income.inspect}, " \
           "confidence=#{confidence.inspect}, " \
           "days=#{days.inspect}>"
@@ -49,7 +49,7 @@ module Plaid
     # Public: The Array of Stream.
     attr_reader :income_streams
 
-    # Public: The Numeric sum of user's income over the past 365 days. If Plaid
+    # Public: The Numeric sum of user's income over the past 365 days. If PlaidHack
     # has less than 365 days of data this will be less than a full year income.
     # E.g. 67000.
     attr_reader :last_year_income
@@ -93,7 +93,7 @@ module Plaid
     #
     # Returns a String.
     def inspect
-      "#<Plaid::Income last_year_income=#{last_year_income.inspect}, " \
+      "#<PlaidHack::Income last_year_income=#{last_year_income.inspect}, " \
         "projected_yearly_income=#{projected_yearly_income.inspect}, " \
         "number_of_income_streams=#{number_of_income_streams.inspect}, ...>"
     end

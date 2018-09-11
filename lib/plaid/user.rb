@@ -1,7 +1,7 @@
 require_relative 'account'
 
-module Plaid
-  # Public: A class which encapsulates the authenticated user for all Plaid
+module PlaidHack
+  # Public: A class which encapsulates the authenticated user for all PlaidHack
   # products.
   class User
     # Public: The access token for authenticated user.
@@ -11,7 +11,7 @@ module Plaid
     attr_reader :processor_token
 
     # Public: The current product. Provides a context for #update and #delete
-    # calls. See Plaid::PRODUCTS.
+    # calls. See PlaidHack::PRODUCTS.
     attr_reader :product
 
     # Public: The Array of Account instances providing accounts information
@@ -43,16 +43,16 @@ module Plaid
     # Public: The String stripe bank account token.
     #
     # This field is set when you use User.exchange_token to convert Link
-    # public_token into an access token suitable for Plaid API.
+    # public_token into an access token suitable for PlaidHack API.
     attr_reader :stripe_bank_account_token
 
-    # Internal: The Plaid::Client instance used to make queries.
+    # Internal: The PlaidHack::Client instance used to make queries.
     attr_reader :client
 
     # Public: Create (add) a user.
     #
     # product     - The Symbol product name you are adding the user to, one of
-    #               Plaid::PRODUCTS (e.g. :info, :connect, etc.).
+    #               PlaidHack::PRODUCTS (e.g. :info, :connect, etc.).
     # institution - The String/Symbol financial institution type that you
     #               want to access (e.g. :wells).
     # username    - The String username associated with the financial
@@ -79,10 +79,10 @@ module Plaid
     #                             transactions (default: 30 days ago).
     #               :end_date   - The end Date to which transactions
     #                             will be collected (default: today).
-    # client      - The Plaid::Client instance used to connect to the API
-    #               (default is to use global Plaid client - Plaid.client).
+    # client      - The PlaidHack::Client instance used to connect to the API
+    #               (default is to use global PlaidHack client - PlaidHack.client).
     #
-    # Returns a Plaid::User instance.
+    # Returns a PlaidHack::User instance.
     def self.create(product, institution, username, password,
                     pin: nil, options: nil, client: nil)
       check_product product
@@ -104,12 +104,12 @@ module Plaid
     # used.
     #
     # product - The Symbol product name you want to use, one of
-    #           Plaid::PRODUCTS (e.g. :info, :connect, etc.).
+    #           PlaidHack::PRODUCTS (e.g. :info, :connect, etc.).
     # token   - The String access token for the user.
-    # client  - The Plaid::Client instance used to connect to the API
-    #           (default is to use global Plaid client - Plaid.client).
+    # client  - The PlaidHack::Client instance used to connect to the API
+    #           (default is to use global PlaidHack client - PlaidHack.client).
     #
-    # Returns a Plaid::User instance.
+    # Returns a PlaidHack::User instance.
     def self.load(product, token, client: nil)
       new check_product(product), access_token: token, client: client
     end
@@ -122,10 +122,10 @@ module Plaid
     # public_token - The String Link public_token.
     # account_id   - The String account ID.
     # product      - The Symbol product name (default: :connect).
-    # client       - The Plaid::Client instance used to connect to the API
-    #                (default is to use global Plaid client - Plaid.client).
+    # client       - The PlaidHack::Client instance used to connect to the API
+    #                (default is to use global PlaidHack client - PlaidHack.client).
     #
-    # Returns a new User with access token obtained from Plaid and default
+    # Returns a new User with access token obtained from PlaidHack and default
     # product set to product. User#stripe_bank_account_token for this user
     # instance will contain the Stripe token.
     def self.exchange_token(public_token, account_id = nil,
@@ -146,13 +146,13 @@ module Plaid
     # Internal: Initialize a User instance.
     #
     # product      - The Symbol product name.
-    # access_token - The String access token obtained from Plaid.
+    # access_token - The String access token obtained from PlaidHack.
     # response     - The Hash response body to parse.
     # mfa          - The Boolean flag indicating that response body
     #                contains an MFA response.
     # stripe_token - The String stripe bank account token.
-    # client       - The Plaid::Client instance used to connect to the API
-    #                (default is to use global Plaid client - Plaid.client).
+    # client       - The PlaidHack::Client instance used to connect to the API
+    #                (default is to use global PlaidHack client - PlaidHack.client).
     def initialize(product, access_token: nil, response: nil, mfa: nil,
                    stripe_token: nil, client: nil)
       @product = product
@@ -330,7 +330,7 @@ module Plaid
     # See also User#for_product.
     #
     # product - The Symbol product name you are upgrading the user to, one of
-    #           Plaid::PRODUCTS.
+    #           PlaidHack::PRODUCTS.
     #
     # Returns another User record with the same access token, but tied to the
     # new product.
@@ -346,7 +346,7 @@ module Plaid
     #
     # No API request is made, just the current product is changed.
     #
-    # product - The Symbol product you are selecting, one of Plaid::PRODUCTS.
+    # product - The Symbol product you are selecting, one of PlaidHack::PRODUCTS.
     #
     # See also User#upgrade.
     #
@@ -386,7 +386,7 @@ module Plaid
     #        rerequested from the server. Otherwise cached version is returned,
     #        if it exists.
     #
-    # Returns a Plaid::Info instance.
+    # Returns a PlaidHack::Info instance.
     def info(sync: false)
       if sync || !@info
         parse_response(Connector.new(:info, :get, auth: true, client: client)
@@ -404,7 +404,7 @@ module Plaid
     #        rerequested from the server. Otherwise cached version is returned,
     #        if it exists.
     #
-    # Returns a Plaid::Income instance.
+    # Returns a PlaidHack::Income instance.
     def income(sync: false)
       if sync || !@income
         parse_response(Connector.new(:income, :get, auth: true, client: client)
@@ -436,7 +436,7 @@ module Plaid
     #
     # Does a POST /balance request.
     #
-    # Returns an Array of Plaid::Account.
+    # Returns an Array of PlaidHack::Account.
     def balance
       response = Connector.new(:balance, auth: true, client: client)
                           .post(access_token: access_token)
@@ -448,11 +448,11 @@ module Plaid
 
     # Internal: Validate the product name.
     def self.check_product(product)
-      if Plaid::PRODUCTS.include?(product)
+      if PlaidHack::PRODUCTS.include?(product)
         product
       else
         raise ArgumentError, "product (#{product.inspect}) must be one of " \
-                             "Plaid products (#{Plaid::PRODUCTS.inspect})"
+                             "PlaidHack products (#{PlaidHack::PRODUCTS.inspect})"
       end
     end
 
@@ -474,17 +474,17 @@ module Plaid
       end
 
       if (income = response['income'])
-        @income = Plaid::Income.new(income)
+        @income = PlaidHack::Income.new(income)
       end
 
       return unless (i = response['info'])
-      @info = Plaid::Info.new(i)
+      @info = PlaidHack::Info.new(i)
     end
 
     # Internal: Parse an MFA response
     def parse_mfa_response(response)
       @mfa_type = response['type'].to_sym
-      @mfa = Plaid.symbolize_hash(response['mfa'])
+      @mfa = PlaidHack.symbolize_hash(response['mfa'])
     end
 
     # Internal: Convert an array of data into an array of objects, encapsulating

@@ -1,6 +1,6 @@
 require 'test_helper'
 
-# The test for Plaid::Income.
+# The test for PlaidHack::Income.
 class PlaidIncomeTest < MiniTest::Test
   # include TestHelpers
 
@@ -15,7 +15,7 @@ class PlaidIncomeTest < MiniTest::Test
   end
 
   def test_string_representation
-    str = '#<Plaid::Income last_year_income=56000, projected_yearly_income=' \
+    str = '#<PlaidHack::Income last_year_income=56000, projected_yearly_income=' \
             '63000, number_of_income_streams=2, ...>'
     assert_equal str, income.to_s
     assert_equal str, income.inspect
@@ -40,7 +40,7 @@ class PlaidIncomeTest < MiniTest::Test
   def test_stream_string_representation
     i = income.income_streams[0]
 
-    s = '#<Plaid::Income::Stream name="PLAID", monthly_income=5250, ' \
+    s = '#<PlaidHack::Income::Stream name="PLAID", monthly_income=5250, ' \
           'confidence=1.0, days=284>'
     assert_equal s, i.to_s
     assert_equal s, i.inspect
@@ -49,7 +49,7 @@ class PlaidIncomeTest < MiniTest::Test
   private
 
   def income
-    @income ||= Plaid::Income.new(income_data)
+    @income ||= PlaidHack::Income.new(income_data)
   end
 
   def income_data

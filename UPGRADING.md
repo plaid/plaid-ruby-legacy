@@ -1,60 +1,60 @@
 ## Upgrading from 2.x.x to 3.0.0
 
-Version 3.0.0 makes `Plaid::Institution` use new `institutions/all` endpoint
-of Plaid API which unites "native" and "long tail" institutions.
-`Plaid::LongTailInstitution` class is removed, its functionality is
-concentrated in `Plaid::Institution`.
+Version 3.0.0 makes `PlaidHack::Institution` use new `institutions/all` endpoint
+of PlaidHack API which unites "native" and "long tail" institutions.
+`PlaidHack::LongTailInstitution` class is removed, its functionality is
+concentrated in `PlaidHack::Institution`.
 
-Use `Plaid::Institution.all` instead of `Plaid::LongTailInstitution.all` (the
+Use `PlaidHack::Institution.all` instead of `PlaidHack::LongTailInstitution.all` (the
 semantics is the same, with added products param).
 
-Use `Plaid::Institution.search` instead of `Plaid::LongTailInstitution.search`.
+Use `PlaidHack::Institution.search` instead of `PlaidHack::LongTailInstitution.search`.
 
-Use `Plaid::Institution.search_by_id` instead of `Plaid::LongTailInstitution.get`.
+Use `PlaidHack::Institution.search_by_id` instead of `PlaidHack::LongTailInstitution.get`.
 
 
 ## Upgrading from 1.x to 2.0.0
 
 Make sure you use Ruby 2.0 or higher.
 
-Update the `Plaid.config` block:
+Update the `PlaidHack.config` block:
 
 ```ruby
-Plaid.config do |p|
-  p.client_id = '<<< Plaid provided client ID >>>'  # WAS: customer_id
-  p.secret = '<<< Plaid provided secret key >>>'    # No change
+PlaidHack.config do |p|
+  p.client_id = '<<< PlaidHack provided client ID >>>'  # WAS: customer_id
+  p.secret = '<<< PlaidHack provided secret key >>>'    # No change
   p.env = :tartan  # or :api for production         # WAS: environment_location
 end
 ```
 
-Use `Plaid::User.create` instead of `Plaid.add_user` (**NOTE**: parameter order has changed!)
+Use `PlaidHack::User.create` instead of `PlaidHack.add_user` (**NOTE**: parameter order has changed!)
 
-Use `Plaid::User.load` instead of `Plaid.set_user` (**NOTE**: parameter order has changed!)
+Use `PlaidHack::User.load` instead of `PlaidHack.set_user` (**NOTE**: parameter order has changed!)
 
-Use `Plaid::User.exchange_token` instead of `Plaid.exchange_token` (**NOTE**: parameter list has changed!)
+Use `PlaidHack::User.exchange_token` instead of `PlaidHack.exchange_token` (**NOTE**: parameter list has changed!)
 
-Use `Plaid::User.create` or (`.load`) and `Plaid::User#transactions` instead of `Plaid.transactions`.
+Use `PlaidHack::User.create` or (`.load`) and `PlaidHack::User#transactions` instead of `PlaidHack.transactions`.
 
-Use `Plaid::Institution.all` and `Plaid::Institution.get` instead of `Plaid.institution`.
+Use `PlaidHack::Institution.all` and `PlaidHack::Institution.get` instead of `PlaidHack.institution`.
 
-Use `Plaid::Category.all` and `Plaid::Category.get` instead of `Plaid.category`.
+Use `PlaidHack::Category.all` and `PlaidHack::Category.get` instead of `PlaidHack.category`.
 
-`Plaid::Account#institution_type` was renamed to `Plaid::Account#institution`.
+`PlaidHack::Account#institution_type` was renamed to `PlaidHack::Account#institution`.
 
-`Plaid::Transaction#account` was renamed to `Plaid::Transaction#account_id`.
+`PlaidHack::Transaction#account` was renamed to `PlaidHack::Transaction#account_id`.
 
-`Plaid::Transaction#date` is a Date, not a String object now.
+`PlaidHack::Transaction#date` is a Date, not a String object now.
 
-`Plaid::Transaction#cat` was removed. Use `Plaid::Transaction#category_hierarchy` and `Plaid::Transaction#category_id` directly.
+`PlaidHack::Transaction#cat` was removed. Use `PlaidHack::Transaction#category_hierarchy` and `PlaidHack::Transaction#category_id` directly.
 
-`Plaid::Transaction#category` was renamed to `Plaid::Transaction#category_hierarchy`.
+`PlaidHack::Transaction#category` was renamed to `PlaidHack::Transaction#category_hierarchy`.
 
-`Plaid::Transaction#pending_transaction` was renamed to `Plaid::Transaction#pending_transaction_id`.
+`PlaidHack::Transaction#pending_transaction` was renamed to `PlaidHack::Transaction#pending_transaction_id`.
 
-Use `Plaid::User#mfa_step` instead of `Plaid::User#select_mfa_method` and `Plaid::User#mfa_authentication`.
+Use `PlaidHack::User#mfa_step` instead of `PlaidHack::User#select_mfa_method` and `PlaidHack::User#mfa_authentication`.
 
-`Plaid::User#permit?` was removed. You don't need this.
+`PlaidHack::User#permit?` was removed. You don't need this.
 
-`Plaid::User.delete_user` was renamed to `Plaid::User.delete`.
+`PlaidHack::User.delete_user` was renamed to `PlaidHack::User.delete`.
 
 **NOTE** that Symbols are now consistently used instead of Strings as product names, keys in hashes, etc. Look at the docs, they have all the examples.

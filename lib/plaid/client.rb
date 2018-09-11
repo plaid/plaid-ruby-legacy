@@ -1,18 +1,18 @@
-module Plaid
-  # Public: A class encapsulating client_id, secret, and Plaid API URL.
+module PlaidHack
+  # Public: A class encapsulating client_id, secret, and PlaidHack API URL.
   class Client
-    # Public: The String Plaid account client ID to authenticate requests.
+    # Public: The String PlaidHack account client ID to authenticate requests.
     attr_accessor :client_id
 
-    # Public: The String Plaid account secret to authenticate requests.
+    # Public: The String PlaidHack account secret to authenticate requests.
     attr_accessor :secret
 
-    # Public: Plaid environment, i.e. String base URL of the API site.
+    # Public: PlaidHack environment, i.e. String base URL of the API site.
     #
     # E.g. 'https://tartan.plaid.com'.
     attr_reader :env
 
-    # Public: Set Plaid environment to use.
+    # Public: Set PlaidHack environment to use.
     #
     # env - The Symbol (:tartan, :production), or a full String URL like
     #       'https://tartan.plaid.com'.
@@ -27,13 +27,13 @@ module Plaid
           URI.parse(env)
           @env = env
         rescue
-          raise ArgumentError, 'Invalid URL in Plaid::Client.env' \
+          raise ArgumentError, 'Invalid URL in PlaidHack::Client.env' \
                                " (#{env.inspect}). " \
                                'Specify either Symbol (:tartan, :production),' \
                                " or a full URL, like 'https://tartan.plaid.com'"
         end
       else
-        raise ArgumentError, 'Invalid value for Plaid::Client.env' \
+        raise ArgumentError, 'Invalid value for PlaidHack::Client.env' \
                              " (#{env.inspect}): " \
                              'must be :tartan, :production, or a full URL, ' \
                              "e.g. 'https://tartan.plaid.com'"
@@ -44,8 +44,8 @@ module Plaid
     #
     # env       - The Symbol (:tartan, :production), or a full String URL like
     #             'https://tartan.plaid.com'.
-    # client_id - The String Plaid account client ID to authenticate requests.
-    # secret    - The String Plaid account secret to authenticate requests.
+    # client_id - The String PlaidHack account client ID to authenticate requests.
+    # secret    - The String PlaidHack account secret to authenticate requests.
     def initialize(env: nil, client_id: nil, secret: nil)
       env && self.env = env
       self.client_id = client_id

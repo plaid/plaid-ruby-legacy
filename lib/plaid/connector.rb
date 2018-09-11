@@ -2,8 +2,8 @@ require 'net/http'
 require 'uri'
 require 'multi_json'
 
-module Plaid
-  # Internal: A class encapsulating HTTP requests to the Plaid API servers
+module PlaidHack
+  # Internal: A class encapsulating HTTP requests to the PlaidHack API servers
   class Connector
     attr_reader :uri, :http, :request, :response, :body
 
@@ -16,11 +16,11 @@ module Plaid
     # subpath - The String subpath. E.g. 'get'
     # auth    - The Boolean flag indicating that client_id and secret should be
     #           included into the request payload.
-    # client  - The Plaid::Client instance used to connect
-    #           (default: Plaid.client).
+    # client  - The PlaidHack::Client instance used to connect
+    #           (default: PlaidHack.client).
     def initialize(path, subpath = nil, auth: false, client: nil)
       @auth = auth
-      @client = client || Plaid.client
+      @client = client || PlaidHack.client
       verify_configuration
 
       path = File.join(@client.env, path.to_s)
@@ -31,7 +31,7 @@ module Plaid
       @http = Net::HTTP.new(@uri.host, @uri.port)
       @http.use_ssl = true
 
-      @http.read_timeout = Plaid.read_timeout || DEFAULT_TIMEOUT
+      @http.read_timeout = PlaidHack.read_timeout || DEFAULT_TIMEOUT
     end
 
     # Internal: Run GET request.
@@ -90,13 +90,13 @@ module Plaid
     # Internal: Run the request and process the response.
     #
     # Returns the parsed JSON body or raises an appropriate exception (a
-    # descendant of Plaid::PlaidError).
+    # descendant of PlaidHack::PlaidError).
     def run(request)
       @request = request
       @response = http.request(@request)
 
       if @response.body.nil? || @response.body.empty?
-        raise Plaid::ServerError.new(0, 'Server error', 'Try to connect later')
+        raise PlaidHack::ServerError.new(0, 'Server error', 'Try to connect later')
       end
 
       # All responses are expected to have a JSON body, so we always parse,
@@ -126,18 +126,18 @@ module Plaid
     # Returns an Array with arguments.
     def raise_error
       klass = case @response
-              when Net::HTTPBadRequest then Plaid::BadRequestError
-              when Net::HTTPUnauthorized then Plaid::UnauthorizedError
-              when Net::HTTPPaymentRequired then Plaid::RequestFailedError
-              when Net::HTTPNotFound then Plaid::NotFoundError
+              when Net::HTTPBadRequest then PlaidHack::BadRequestError
+              when Net::HTTPUnauthorized then PlaidHack::UnauthorizedError
+              when Net::HTTPPaymentRequired then PlaidHack::RequestFailedError
+              when Net::HTTPNotFound then PlaidHack::NotFoundError
               else
-                Plaid::ServerError
+                PlaidHack::ServerError
               end
 
       raise klass.new(body['code'], body['message'], body['resolve'])
     end
 
-    # Internal: Verify that Plaid environment is properly configured.
+    # Internal: Verify that PlaidHack environment is properly configured.
     #
     # Raises NotConfiguredError if anything is wrong.
     def verify_configuration
@@ -150,10 +150,10 @@ module Plaid
 
     # Internal: Raise a NotConfiguredError exception with proper message.
     def raise_not_configured(field, auth: true)
-      message = "You must set Plaid::Client.#{field} before using any methods"
+      message = "You must set PlaidHack::Client.#{field} before using any methods"
       message << ' which require authentication' if auth
       message << "! It's current value is #{@client.send(field).inspect}. " \
-                 'E.g. add a Plaid.config do .. end block somewhere in the ' \
+                 'E.g. add a PlaidHack.config do .. end block somewhere in the ' \
                  'initialization code of your program.'
 
       raise NotConfiguredError, message

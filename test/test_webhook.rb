@@ -1,9 +1,9 @@
 require 'test_helper'
 
-# Internal: The test for Plaid::Webhook.
+# Internal: The test for PlaidHack::Webhook.
 class PlaidWebhookTest < MiniTest::Test
   def initial_transaction_webhook
-    webhook = Plaid::Webhook.new(
+    webhook = PlaidHack::Webhook.new(
       'message' => 'Initial transaction pull finished',
       'access_token' => '123456',
       'total_transactions' => 123,
@@ -22,7 +22,7 @@ class PlaidWebhookTest < MiniTest::Test
   end
 
   def test_removed_transaction_webhook
-    webhook = Plaid::Webhook.new(
+    webhook = PlaidHack::Webhook.new(
       'message' => 'Transactions removed',
       'access_token' => '123456',
       'code' => 3,
@@ -43,7 +43,7 @@ class PlaidWebhookTest < MiniTest::Test
   end
 
   def test_income
-    webhook = Plaid::Webhook.new(
+    webhook = PlaidHack::Webhook.new(
       'message' => 'income data available',
       'access_token' => '123456',
       'code' => 10)
@@ -61,7 +61,7 @@ class PlaidWebhookTest < MiniTest::Test
   end
 
   def test_error
-    webhook = Plaid::Webhook.new(
+    webhook = PlaidHack::Webhook.new(
       'message' => 'account locked',
       'resolve' => 'The account is locked. Please prompt the user to visit ' +
                    "the issuing institution's site and unlock their account.",
@@ -80,7 +80,7 @@ class PlaidWebhookTest < MiniTest::Test
     refute_predicate webhook, :risk?
 
     err = webhook.error
-    assert_kind_of Plaid::PlaidError, err
+    assert_kind_of PlaidHack::PlaidError, err
     assert_equal 1205, err.code
     assert_equal 'Code 1205: account locked. The account is locked. ' +
                  "Please prompt the user to visit the issuing institution's " +

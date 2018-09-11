@@ -1,5 +1,5 @@
-module Plaid
-  # Public: A class which encapsulates information about a Plaid category.
+module PlaidHack
+  # Public: A class which encapsulates information about a PlaidHack category.
   class Category
     # Public: The String category ID, e.g. "21010006".
     attr_reader :id
@@ -22,7 +22,7 @@ module Plaid
     #
     # Returns a String.
     def inspect
-      "#<Plaid::Category id=#{id.inspect}, type=#{type.inspect}, " \
+      "#<PlaidHack::Category id=#{id.inspect}, type=#{type.inspect}, " \
       "hierarchy=#{hierarchy.inspect}>"
     end
 
@@ -35,8 +35,8 @@ module Plaid
     #
     # Does a GET /categories call.
     #
-    # client - The Plaid::Client instance used to connect
-    #          (default: Plaid.client).
+    # client - The PlaidHack::Client instance used to connect
+    #          (default: PlaidHack.client).
     #
     # Returns an Array of Category instances.
     def self.all(client: nil)
@@ -50,10 +50,10 @@ module Plaid
     # Does a GET /categories/:id call.
     #
     # id     - the String category ID (e.g. "17001013").
-    # client - The Plaid::Client instance used to connect
-    #          (default: Plaid.client).
+    # client - The PlaidHack::Client instance used to connect
+    #          (default: PlaidHack.client).
     #
-    # Returns a Category instance or raises Plaid::NotFoundError if category
+    # Returns a Category instance or raises PlaidHack::NotFoundError if category
     # with given id is not found.
     def self.get(id, client: nil)
       new Connector.new(:categories, id, client: client).get

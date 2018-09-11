@@ -1,4 +1,4 @@
-module Plaid
+module PlaidHack
   # Public: Representation of a webhook.
   class Webhook
     # Public: The String human readable explanation of this webhook request.
@@ -8,7 +8,7 @@ module Plaid
     # Public: The String access token for authenticated user.
     attr_reader :access_token
 
-    # Public: The Integer number of transactions available in Plaid.
+    # Public: The Integer number of transactions available in PlaidHack.
     # E.g. 124
     attr_reader :total_transactions
 
@@ -93,7 +93,7 @@ module Plaid
     end
 
     # Public: Detect if the webhook is Error Response Webhook. Triggered when
-    # an error has occurred. Includes the relevant Plaid error code with
+    # an error has occurred. Includes the relevant PlaidHack error code with
     # details on both the error type and steps for error resolution.
     #
     # Returns true if it is.
@@ -108,12 +108,12 @@ module Plaid
       @removed_transactions
     end
 
-    # Public: Get a Plaid::Error instance if this is an Error Response Webhook
+    # Public: Get a PlaidHack::Error instance if this is an Error Response Webhook
     #
-    # Returns Plaid::Error or nil
+    # Returns PlaidHack::Error or nil
     def error
       if error_response?
-        Plaid::PlaidError.new @code, @message, @resolve
+        PlaidHack::PlaidError.new @code, @message, @resolve
       end
     end
 
@@ -121,7 +121,7 @@ module Plaid
     #
     # Returns a String.
     def inspect
-      "#<Plaid::Webhook type=#{type.inspect} code=#{code.inspect}, access_token=#{access_token.inspect}, " \
+      "#<PlaidHack::Webhook type=#{type.inspect} code=#{code.inspect}, access_token=#{access_token.inspect}, " \
       "total_transactions=#{total_transactions.inspect}, message=#{message.inspect}>"
     end
 

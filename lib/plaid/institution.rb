@@ -1,6 +1,6 @@
-module Plaid
+module PlaidHack
   # Public: A class encapsulating information about a Financial Institution
-  # supported by Plaid.
+  # supported by PlaidHack.
   class Institution
     # Public: The String institution ID. E.g. "5301a93ac140de84910000e0".
     attr_reader :id
@@ -8,7 +8,7 @@ module Plaid
     # Public: The String institution name. E.g. "Bank of America".
     attr_reader :name
 
-    # Public: The String institution shortname, or "type" per Plaid API docs.
+    # Public: The String institution shortname, or "type" per PlaidHack API docs.
     # E.g. "bofa".
     attr_reader :type
 
@@ -30,7 +30,7 @@ module Plaid
 
     # Public: An Array with Symbol product names supported by the institution.
     # E.g. [:connect, :auth, :balance, :info, :income, :risk]. See
-    # Plaid::PRODUCTS.
+    # PlaidHack::PRODUCTS.
     attr_reader :products
 
     # Internal: Initialize an Institution with given fields.
@@ -48,7 +48,7 @@ module Plaid
     #
     # Returns a String.
     def inspect
-      "#<Plaid::Institution id=#{id.inspect}, type=#{type.inspect}, " \
+      "#<PlaidHack::Institution id=#{id.inspect}, type=#{type.inspect}, " \
       "name=#{name.inspect}>"
     end
 
@@ -58,7 +58,7 @@ module Plaid
     alias to_s inspect
 
     # Public: Get information about the Financial Institutions currently
-    # supported by Plaid.
+    # supported by PlaidHack.
     #
     # Does a POST /institutions/all call. The result is paginated (count,
     # offset params) and filtered by products. If the products param is
@@ -68,10 +68,10 @@ module Plaid
     # count    - The Integer number of results to retrieve (default: 50).
     # offset   - The Integer number of results to skip forward from the
     #            beginning of the list (default: 0).
-    # products - The Array of product Symbols (see Plaid::PRODUCTS) or nil.
+    # products - The Array of product Symbols (see PlaidHack::PRODUCTS) or nil.
     #            E.g. [:connect, :auth]. Default: nil.
-    # client   - The Plaid::Client instance used to connect
-    #            (default: Plaid.client).
+    # client   - The PlaidHack::Client instance used to connect
+    #            (default: PlaidHack.client).
     #
     # Returns an Array of Institution instances.
     def self.all(count: 50, offset: 0, products: nil, client: nil)
@@ -97,10 +97,10 @@ module Plaid
     #
     # id     - the String institution ID (e.g. "5301a93ac140de84910000e0", or
     #          "ins_109263").
-    # client - The Plaid::Client instance used to connect
-    #          (default: Plaid.client).
+    # client - The PlaidHack::Client instance used to connect
+    #          (default: PlaidHack.client).
     #
-    # Returns an Institution instance or raises Plaid::NotFoundError if
+    # Returns an Institution instance or raises PlaidHack::NotFoundError if
     # institution with given id is not found.
     def self.get(id, client: nil)
       new Connector.new('institutions/all', id, client: client).get
@@ -111,12 +111,12 @@ module Plaid
     # query   - The String search query to match against the full list of
     #           institutions. Partial matches are returned making this useful
     #           for autocompletion purposes.
-    # product - The Symbol product name to filter by, one of Plaid::PRODUCTS
+    # product - The Symbol product name to filter by, one of PlaidHack::PRODUCTS
     #           (e.g. :info, :connect, etc.). Only valid when query is
     #           specified. If nil, results are not filtered by product
     #           (default: nil).
-    # client  - The Plaid::Client instance used to connect
-    #           (default: Plaid.client).
+    # client  - The PlaidHack::Client instance used to connect
+    #           (default: PlaidHack.client).
     #
     # Returns an Array of SearchResultInstitution.
     def self.search(query: nil, product: nil, client: nil)
@@ -135,13 +135,13 @@ module Plaid
     # Does a GET /institutions/all/search call with id param.
     #
     # id - the String institution ID (e.g. 'bofa').
-    # client - The Plaid::Client instance used to connect
-    #          (default: Plaid.client).
+    # client - The PlaidHack::Client instance used to connect
+    #          (default: PlaidHack.client).
     #
     # Returns an SearchResultInstitution instance or nil if institution with
     # given id is not found.
     def self.search_by_id(id, client: nil)
-      client ||= Plaid.client
+      client ||= PlaidHack.client
 
       # If client_id is set, use it, no authentication otherwise
       auth = client && !client.client_id.nil?
@@ -175,7 +175,7 @@ module Plaid
   end
 
   # Public: A class encapsulating information about a Financial Institution
-  # supported by Plaid.
+  # supported by PlaidHack.
   class SearchResultInstitution
     # Public: The String ID of the institution. Same as type. E.g. "bofa".
     attr_reader :id
@@ -228,12 +228,12 @@ module Plaid
         instance_variable_set "@#{f}", hash[f]
       end
 
-      @products = Plaid.symbolize_hash(hash['products'])
+      @products = PlaidHack.symbolize_hash(hash['products'])
       @forgotten_password_url = hash['forgottenPassword']
       @account_locked_url = hash['accountLocked']
       @account_setup_url = hash['accountSetup']
-      @fields = hash['fields'].map { |fld| Plaid.symbolize_hash(fld) }
-      @colors = Plaid.symbolize_hash(hash['colors'])
+      @fields = hash['fields'].map { |fld| PlaidHack.symbolize_hash(fld) }
+      @colors = PlaidHack.symbolize_hash(hash['colors'])
       @name_break = hash['nameBreak']
     end
 
@@ -241,7 +241,7 @@ module Plaid
     #
     # Returns a String.
     def inspect
-      "#<Plaid::SearchResultInstitution id=#{id.inspect}, name=#{name.inspect}, " \
+      "#<PlaidHack::SearchResultInstitution id=#{id.inspect}, name=#{name.inspect}, " \
         '...>'
     end
 

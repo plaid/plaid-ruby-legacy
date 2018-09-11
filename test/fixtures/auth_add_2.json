@@ -10,7 +10,7 @@
       },
       "institution_type": "fake_institution",
       "meta": {
-        "name": "Plaid Savings",
+        "name": "PlaidHack Savings",
         "number": "9606"
       },
       "numbers": {
@@ -31,7 +31,7 @@
       },
       "institution_type": "fake_institution",
       "meta": {
-        "name": "Plaid Checking",
+        "name": "PlaidHack Checking",
         "number": "1702"
       },
       "numbers": {
@@ -52,7 +52,7 @@
       },
       "institution_type": "fake_institution",
       "meta": {
-        "name": "Plaid Premier Checking",
+        "name": "PlaidHack Premier Checking",
         "number": "5204"
       },
       "numbers": {
@@ -74,7 +74,7 @@
       "institution_type": "fake_institution",
       "meta": {
         "limit": 12500,
-        "name": "Plaid Credit Card",
+        "name": "PlaidHack Credit Card",
         "number": "3002"
       },
       "numbers": {},

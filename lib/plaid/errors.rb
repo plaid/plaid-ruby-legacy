@@ -1,8 +1,8 @@
-module Plaid
+module PlaidHack
   # Public: Exception to throw when there are configuration problems
   class NotConfiguredError < StandardError; end
 
-  # Internal: Base class for Plaid errors
+  # Internal: Base class for PlaidHack errors
   class PlaidError < StandardError
     attr_reader :code, :resolve
 
@@ -19,19 +19,19 @@ module Plaid
     end
   end
 
-  # Public: Exception which is thrown when Plaid API returns a 400 response.
+  # Public: Exception which is thrown when PlaidHack API returns a 400 response.
   class BadRequestError    < PlaidError; end
 
-  # Public: Exception which is thrown when Plaid API returns a 401 response.
+  # Public: Exception which is thrown when PlaidHack API returns a 401 response.
   class UnauthorizedError  < PlaidError; end
 
-  # Public: Exception which is thrown when Plaid API returns a 402 response.
+  # Public: Exception which is thrown when PlaidHack API returns a 402 response.
   class RequestFailedError < PlaidError; end
 
-  # Public: Exception which is thrown when Plaid API returns a 404 response.
+  # Public: Exception which is thrown when PlaidHack API returns a 404 response.
   class NotFoundError      < PlaidError; end
 
-  # Public: Exception which is thrown when Plaid API returns a response which
+  # Public: Exception which is thrown when PlaidHack API returns a response which
   # is neither 2xx, nor 4xx. Presumably 5xx.
   class ServerError        < PlaidError; end
 end

@@ -1,6 +1,6 @@
 require 'test_helper'
 
-# The test for Plaid::Risk.
+# The test for PlaidHack::Risk.
 class PlaidRiskTest < MiniTest::Test
   def test_initialization
     assert_equal 0.79, risk.score
@@ -16,7 +16,7 @@ class PlaidRiskTest < MiniTest::Test
   end
 
   def test_string_representation
-    s = '#<Plaid::Risk score=0.79, ...'
+    s = '#<PlaidHack::Risk score=0.79, ...'
     assert_equal s, risk.to_s
     assert_equal s, risk.inspect
   end
@@ -24,7 +24,7 @@ class PlaidRiskTest < MiniTest::Test
   private
 
   def risk
-    @risk ||= Plaid::Risk.new(risk_data)
+    @risk ||= PlaidHack::Risk.new(risk_data)
   end
 
   def risk_data
